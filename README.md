@@ -8,7 +8,7 @@ To launch the application, just run in the repository root:
 flask run
 ```
 
-## Send JSON command
+## Send JSON command for API_Example
 To send JSON follows this command: 
 
 ```
