@@ -12,12 +12,12 @@ flask run
 To send JSON follows this command: 
 
 ```
-curl -X POST https://127.0.0.1:5000/books/2
+curl -X POST http://127.0.0.1:5000/books/2
    -H 'Content-Type: application/json'
    -d '{"title":"my_title","length":100}'
 ```
 
 For simple Get Request:
 ```
-curl https://127.0.0.1:5000/books
+curl http://127.0.0.1:5000/books
 ```

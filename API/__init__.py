@@ -1,25 +1,27 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 
+from datetime import datetime
+
 
 # A List of Dicts to store all of the books
 jobs = [{
-    "id": 1,
-    "title": "Zero to One",
-    "author": "Peter Thiel",
-    "length": 195,
-    "rating": 4.17
+    "job_id": 1,
+    "path_file": "/path/to/my/file",
+    "status": "In Queue",
+    "last-seen": datetime.now(),
+    "result": 4.17
 }
 ]
 
 
 # Schema For the Book Request JSON
 jobFields = {
-    "id": fields.Integer,
-    "title": fields.String,
-    "author": fields.String,
-    "length": fields.Integer,
-    "rating": fields.Float
+    "job_id": fields.Integer,
+    "path_file": fields.String,
+    "status": fields.String,
+    "last-seen": fields.String,
+    "result": fields.Float
 }
 
 def create_app(test_config=None):
@@ -29,10 +31,10 @@ def create_app(test_config=None):
 
     
     from .jobList import JobList
-    api.add_resource(BookList, "/books")
+    api.add_resource(JobList, "/jobs")
 
     from .job import Job
-    api.add_resource(Book, "/books/<int:id>")
+    api.add_resource(Job, "/jobs/<int:id>")
 
     return app
 
