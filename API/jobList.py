@@ -1,17 +1,14 @@
 from . import jobs,jobFields
 from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 
+from datetime import datetime
+
 class JobList(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
-            "title", type=str, required=True, help="The title of the job must be provided", location="json")
-        self.reqparse.add_argument(
-            "author", type=str, required=True, help="The author of the job must be provided", location="json")
-        self.reqparse.add_argument("length", type=int, required=True,
-                                   help="The length of the job (in pages)", location="json")
-        self.reqparse.add_argument(
-            "rating", type=float, required=True, help="The rating must be provided", location="json")
+            "path_file", type=str, required=True, help="The path to the file must be indicated", location="json")
+        
 
     def get(self):
         return{"jobs": [marshal(job, jobFields) for job in jobs]}
@@ -19,11 +16,11 @@ class JobList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         job = {
-            "id": jobs[-1]['id'] + 1 if len(jobs) > 0 else 1,
-            "title": args["title"],
-            "author": args["author"],
-            "length": args["length"],
-            "rating": args["rating"]
+            "job_id": jobs[-1]['job_id'] + 1 if len(jobs) > 0 else 1,
+            "path_file": args["path_file"],
+            "status": "In Queue",
+            "last-seen": str(datetime.now()),
+            "result": 0.0
         }
 
         jobs.append(job)

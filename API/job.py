@@ -6,7 +6,7 @@ class Job(Resource):
     def __init__(self):
         # Initialize The Flsak Request Parser and add arguments as in an expected request
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("path_file", type=str, location="json")
+        self.reqparse.add_argument("path_file", type=str, help="The path to the file must be indicated", location="json")
 
         super(Job, self).__init__()
 
