@@ -24,3 +24,4 @@ curl http://127.0.0.1:5000/books
 
 ## The API use Queue library and Async function
 The API hyave two main jobs, the one is to answer the request send from the user and the seconde is to consume these jobs. Indeed we can't afford to stop the server http and his answer while python do a job. So we have a synchronized queue, like this we can answer and our async function can consume.
+For thesubprocess we use Popen. Like this we can read the avancement of the process in direct and update the list.

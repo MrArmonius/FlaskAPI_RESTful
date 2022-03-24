@@ -74,3 +74,6 @@ fi
 if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
     hash -r
 fi
+
+export FLASK_APP=API
+export FLASK_ENV=development

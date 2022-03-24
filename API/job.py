@@ -1,4 +1,4 @@
-from . import jobs,jobFields
+from . import jobs,jobFields,jobQueue
 from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 
 # Resource: Individual Job Routes
@@ -12,23 +12,27 @@ class Job(Resource):
 
     # GET - Returns a single job object given a matching id
     def get(self, id):
-        job = [job for job in jobs if job['job_id'] == id]
+        #job = [job for job in jobs if job['job_id'] == id]
+        job = jobs.get(id)
 
-        if(len(job) == 0):
+        if job is None:
             abort(404)
 
-        return{"job": marshal(job[0], jobFields)}
+        return{"job": marshal(job, jobFields)}
 
     # PUT - Given an id
     def put(self, id):
-        job = [job for job in jobs if job['job_id'] == id]
+        #job = [job for job in jobs if job['job_id'] == id]
+        job = jobs.get(id)
 
-        if len(job) == 0:
+        if jobQueue.full():
+            abort(405)
+        if job is None:
             abort(404)
 
-        job = job[0]
+        #job = job[0]
 
-        # Loop Through all the passed agruments
+        # Loop Through all the passed arguments
         args = self.reqparse.parse_args()
         for k, v in args.items():
             # Check if the passed value is not null
@@ -40,11 +44,13 @@ class Job(Resource):
 
         # Delete - Given an id
     def delete(self, id):
-        job = [job for job in jobs if job['job_id'] == id]
+        #job = [job for job in jobs if job['job_id'] == id]
 
-        if(len(job) == 0):
+        job = jobs.get(id)
+
+        if job is None:
             abort(404)
 
-        jobs.remove(job[0])
+        jobs.pop(id)
 
         return 201
