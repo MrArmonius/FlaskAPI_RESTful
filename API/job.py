@@ -12,7 +12,6 @@ class Job(Resource):
 
     # GET - Returns a single job object given a matching id
     def get(self, id):
-        #job = [job for job in jobs if job['job_id'] == id]
         job = jobs.get(id)
 
         if job is None:
@@ -22,15 +21,12 @@ class Job(Resource):
 
     # PUT - Given an id
     def put(self, id):
-        #job = [job for job in jobs if job['job_id'] == id]
         job = jobs.get(id)
 
         if jobQueue.full():
             abort(405)
         if job is None:
             abort(404)
-
-        #job = job[0]
 
         # Loop Through all the passed arguments
         args = self.reqparse.parse_args()
@@ -44,7 +40,6 @@ class Job(Resource):
 
         # Delete - Given an id
     def delete(self, id):
-        #job = [job for job in jobs if job['job_id'] == id]
 
         job = jobs.get(id)
 

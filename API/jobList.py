@@ -20,7 +20,6 @@ class JobList(Resource):
         if jobQueue.full():
             abort(405)
         job = {
-            #"job_id": jobs['job_id'] + 1 if len(jobs) > 0 else 1,
             "job_id": args["job_id"],
             "path_file": args["path_file"],
             "status": "In Queue",
