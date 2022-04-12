@@ -22,13 +22,13 @@ class Consumer(Thread):
             self.jobs[job["job_id"]]["status"] = "In Process"
 
             # launch subprocess CuraEngine with path_file, path_json, output
-            process = subprocess.Popen(['CuraEngine', '"Hello stdout"'], stdout=subprocess.PIPE)
+            process = subprocess.Popen(['echo', '"Hello stdout"'], stdout=subprocess.DEVNULL)
 
             # While curaengine isn't finished, update the status
             while process.poll() is None:
                 # read only one line
-                output = process.stdout.readline()
-                print(output, file=sys.stderr)
+                #output = process.stdout.readline()
+                #print(output, file=sys.stderr)
                 # Time refresh status in seconds
                 time.sleep(0.5)
 
