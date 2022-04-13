@@ -20,14 +20,24 @@ class Consumer(Thread):
             job = self.queue.get()
             
             # change the state of map "In Queue" to "In Process"
-            self.jobs[job["job_id"]]["status"] = "In Process"
+            self.jobs[job["job_id"]]["status"] = "Slicing"
 
             # launch subprocess CuraEngine with path_file, path_json, output
-            process = subprocess.run(['echo', '"Hello stdout"'], universal_newlines=True,stdout=subprocess.PIPE)
+            # Maybe use Popen if we have very trouble about the execution time
+            process = subprocess.Popen(['echo', 'lol1\n', 'lol2'], universal_newlines=True,stdout=subprocess.PIPE)
 
-            print(process.stdout)
-            self.queue.task_done()
+            #change status of our process
+            self.jobs[job["job_id"]]["result"] = 80.0
+            self.jobs[job["job_id"]]["status"] = "Saving meta-data"
+
+            #test every line and find the ones which are important (i.e. length of filament, time of the print, weight of filament) and transform them in JSON to save it in DB
+            lines = process.stdout.readlines()
+            for line in lines:
+                if "" in line:
+                    #TODO
+            
                 
             # Change the status and go consume an other job and be sure to have 100.0% in result
             self.jobs[job["job_id"]]["result"] = 100.0
             self.jobs[job["job_id"]]["status"] = "Finish"
+            self.queue.task_done()
