@@ -24,7 +24,7 @@ class Consumer(Thread):
 
             # launch subprocess CuraEngine with path_file, path_json, output
             # Maybe use Popen if we have very trouble about the execution time
-            process = subprocess.Popen(['echo', 'lol1\n', 'lol2'], universal_newlines=True,stdout=subprocess.PIPE)
+            process = subprocess.run(['echo', 'lol1\n', 'lol2'], universal_newlines=True,stdout=subprocess.PIPE)
 
             #change status of our process
             self.jobs[job["job_id"]]["result"] = 80.0
