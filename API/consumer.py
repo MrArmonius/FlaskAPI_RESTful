@@ -31,10 +31,9 @@ class Consumer(Thread):
             self.jobs[job["job_id"]]["status"] = "Saving meta-data"
 
             #test every line and find the ones which are important (i.e. length of filament, time of the print, weight of filament) and transform them in JSON to save it in DB
-            lines = process.stdout.readlines()
-            for line in lines:
-                if "" in line:
-                    #TODO
+            lines = process.stdout.split("\n")
+            for line in lines[-20:]:
+                print(line)
             
                 
             # Change the status and go consume an other job and be sure to have 100.0% in result
