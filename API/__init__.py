@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, current_app
 from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 import werkzeug
 
@@ -39,18 +39,25 @@ def create_app(test_config=None):
     app = Flask(__name__)
     api = Api(app)
     
+    from .config import DevelopmentConfig
+    app.config.from_object(DevelopmentConfig()) 
+
     from .jobList import JobList
     api.add_resource(JobList, "/jobs")
 
     from .job import Job
     api.add_resource(Job, "/jobs/<id>")
 
-    # Launch thread consummer
-    from .consumer import Consumer
-    for _ in range(1):
-        cons = Consumer(jobQueue, jobs)
-        cons.daemon = True
-        cons.start()
+    @app.before_first_request
+    def _run_thread():
+        # Launch thread consummer
+        from .consumer import Consumer
+        for _ in range(1):
+            cons = Consumer(jobQueue, jobs)
+            cons.daemon = True
+            cons.start()
     
 
     return app
+
+

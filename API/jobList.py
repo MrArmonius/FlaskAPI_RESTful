@@ -6,6 +6,8 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import json
 
+from flask import current_app as app
+
 class JobList(Resource):
     
     def __init__(self):
@@ -23,6 +25,7 @@ class JobList(Resource):
         
 
     def get(self): 
+        print(app.config['CURAENGINE'])
         return{"jobs": [marshal(job, jobFields) for _, job in jobs.items()]}
 
     def post(self):
@@ -45,7 +48,6 @@ class JobList(Resource):
             "last-seen": str(datetime.now()),
             "result": 0.0
         }
-
         stl_file = args["file"]
         stl_file.save(path_file)
 
