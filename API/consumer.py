@@ -28,20 +28,25 @@ class Consumer(Thread):
 
                 # launch subprocess CuraEngine with path_file, path_json, output
                 # Maybe use Popen if we have very trouble about the execution time
-                
-                process = subprocess.run(['echo', '--help'], universal_newlines=True,stdout=subprocess.PIPE)
+                INPUT = self.app.config['PATH_STL'] + job["path_file"] + ".stl"
+                OUTPUT = self.app.config['PATH_GCODE'] + job["path_file"] + ".gcode"
+                process = subprocess.run([self.app.config['CURAENGINE'], 'slice', '-v', '-p', '-j', self.app.config['FDMPRINTER_DEF'], '-j', self.app.config['DEFAULT_PRINTERDEF'], '-l', INPUT, '-o', OUTPUT], universal_newlines=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-                #change status of our process
-                self.jobs[job["job_id"]]["result"] = 80.0
-                self.jobs[job["job_id"]]["status"] = "Saving meta-data"
-
-                #test every line and find the ones which are important (i.e. length of filament, time of the print, weight of filament) and transform them in JSON to save it in DB
-                lines = process.stdout.split("\n")
-                for line in lines[-20:]:
-                    print(line)
                 
+                if process.returncode == 0:
+                    #change status of our process
+                    self.jobs[job["job_id"]]["result"] = 80.0
+                    self.jobs[job["job_id"]]["status"] = "Saving meta-data"
+
+                    #test every line and find the ones which are important (i.e. length of filament, time of the print, weight of filament) and transform them in JSON to save it in DB
+                    lines = process.stdout.split("\n")
+                    for line in lines[-20:]:
+                        print(line)
                     
-                # Change the status and go consume an other job and be sure to have 100.0% in result
-                self.jobs[job["job_id"]]["result"] = 100.0
-                self.jobs[job["job_id"]]["status"] = "Finish"
+                        
+                    # Change the status and go consume an other job and be sure to have 100.0% in result
+                    self.jobs[job["job_id"]]["result"] = 100.0
+                    self.jobs[job["job_id"]]["status"] = "Finish"
+                
+                 
                 self.queue.task_done()

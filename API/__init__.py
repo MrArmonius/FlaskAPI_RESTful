@@ -15,7 +15,14 @@ jobQueue = Queue(maxsize=3)
 # A List of Dicts to store all of the books
 jobs = {"xUi7aze":{
     "job_id": "xUi7aze",
-    "path_file": "/path/to/my/file",
+    "path_file": "eFgr",
+    "status": "In Queue",
+    "last-seen": datetime.now(),
+    "result": 4.17
+},
+"xUi8aze":{
+    "job_id": "xUi8aze",
+    "path_file": "eFgr",
     "status": "In Queue",
     "last-seen": datetime.now(),
     "result": 4.17
@@ -23,6 +30,7 @@ jobs = {"xUi7aze":{
 }
 
 jobQueue.put(jobs["xUi7aze"])
+jobQueue.put(jobs["xUi8aze"])
 # Schema For the Book Request JSON
 jobFields = {
     "job_id": fields.String,
