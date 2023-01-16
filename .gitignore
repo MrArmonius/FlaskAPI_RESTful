@@ -1,1 +1,5 @@
 venv
+gcode
+stl
+API/__pycache__
+API_Example/__pycache__
