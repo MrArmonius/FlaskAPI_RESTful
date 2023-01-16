@@ -4,11 +4,11 @@ class Config(object):
     TESTING = False
 
     #Def CuraEngine Path
-    CURAENGINE= '/home/mrarmonius/Documents/Site_Impression3D/CuraEngineInstallation/CuraEngine/build/CuraEngine'
+    CURAENGINE= 'CuraEngine'
     
     #Def Path Input STL and Output GCODE
-    PATH_STL='/home/mrarmonius/Documents/Site_Impression3D/FlaskAPI_RESTful/stl/'
-    PATH_GCODE='/home/mrarmonius/Documents/Site_Impression3D/FlaskAPI_RESTful/gcode/'
+    PATH_STL='./stl/'
+    PATH_GCODE='./gcode/'
 
 class ProductionConfig(Config):
     DATABASE_URI= ''
@@ -18,7 +18,7 @@ class DevelopmentConfig(Config):
 
 
     #Def of path for def.json config files
-    PATH_JSON_CURAENGINE= '/home/mrarmonius/Documents/Site_Impression3D/CuraEngineInstallation/config/'
+    PATH_JSON_CURAENGINE= './config_curaengine/'
     FDMPRINTER_DEF= PATH_JSON_CURAENGINE + 'fdmprinter.def.json'
     DEFAULT_PRINTERDEF= PATH_JSON_CURAENGINE + 'prusa_i3.def.json'
 
