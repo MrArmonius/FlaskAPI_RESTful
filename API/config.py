@@ -18,7 +18,7 @@ class DevelopmentConfig(Config):
 
 
     #Def of path for def.json config files
-    PATH_JSON_CURAENGINE= './config_curaengine/'
+    PATH_JSON_CURAENGINE= '/home/armonius/Documents/flask/FlaskAPI_RESTful/config_curaengine/'
     FDMPRINTER_DEF= PATH_JSON_CURAENGINE + 'fdmprinter.def.json'
     DEFAULT_PRINTERDEF= PATH_JSON_CURAENGINE + 'prusa_i3.def.json'
 

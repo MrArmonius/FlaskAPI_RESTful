@@ -33,5 +33,5 @@ curl -F 'file=@sample1.stl' -F data='{"job_id":"erwan"}' http://localhost:5000/j
 Later, we will add the configuration file of curaengine.
 
 ## The API use Queue library and Async function
-The API hyave two main jobs, the one is to answer the request send from the user and the seconde is to consume these jobs. Indeed we can't afford to stop the server http and his answer while python do a job. So we have a synchronized queue, like this we can answer and our async function can consume.
+The API have two main jobs, the one is to answer the request send from the user and the seconde is to consume these jobs. Indeed we can't afford to stop the server http and his answer while python do a job. So we have a synchronized queue, like this we can answer and our async function can consume.
 For thesubprocess we use Popen. Like this we can read the avancement of the process in direct and update the list.

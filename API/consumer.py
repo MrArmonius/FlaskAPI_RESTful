@@ -32,6 +32,11 @@ class Consumer(Thread):
                 OUTPUT = self.app.config['PATH_GCODE'] + job["path_file"] + ".gcode"
                 process = subprocess.run([self.app.config['CURAENGINE'], 'slice', '-v', '-p', '-j', self.app.config['FDMPRINTER_DEF'], '-j', self.app.config['DEFAULT_PRINTERDEF'], '-l', INPUT, '-o', OUTPUT], universal_newlines=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
+
+                print("Return code curaengine: ", process.returncode)
+                lines = process.stdout.split("\n")
+                for line in lines[-20:]:
+                        print(line)
                 
                 if process.returncode == 0:
                     #change status of our process
