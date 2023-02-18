@@ -13,31 +13,42 @@ from queue import Queue
 jobQueue = Queue(maxsize=3)
 
 # A List of Dicts to store all of the books
-jobs = {"xUi7aze":{
-    "job_id": "xUi7aze",
-    "path_file": "eFgr",
-    "status": "In Queue",
-    "last-seen": datetime.now(),
-    "result": 4.17
-},
-"xUi8aze":{
-    "job_id": "xUi8aze",
-    "path_file": "eFgr",
-    "status": "In Queue",
-    "last-seen": datetime.now(),
-    "result": 4.17
-}
-}
+jobs = {}
 
-jobQueue.put(jobs["xUi7aze"])
-jobQueue.put(jobs["xUi8aze"])
+# "xUi7aze":{
+#     "job_id": "xUi7aze",
+#     "path_file": "eFgr",
+#     "status": "In Queue",
+#     "last-seen": datetime.now(),
+#     "result": 4.17
+# },
+# "xUi8aze":{
+#     "job_id": "xUi8aze",
+#     "path_file": "eFgr",
+#     "status": "In Queue",
+#     "last-seen": datetime.now(),
+#     "result": 4.17
+# }
+
+# jobQueue.put(jobs["xUi7aze"])
+# jobQueue.put(jobs["xUi8aze"])
 # Schema For the Book Request JSON
 jobFields = {
     "job_id": fields.String,
     "path_file": fields.String,
     "status": fields.String,
     "last-seen": fields.String,
-    "result": fields.Float
+    "result": fields.Float,
+    "time": fields.Integer,
+    "filament_used": fields.Float,
+    "layer_height": fields.Float,
+    "minx": fields.Float,
+    "miny": fields.Float,
+    "minz": fields.Float,
+    "maxx": fields.Float,
+    "maxy": fields.Float,
+    "maxz": fields.Float,
+    "filament_volume": fields.Integer
 }
 
 

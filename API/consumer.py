@@ -11,11 +11,50 @@ import io
 # The queue is the same for all consummers.
 
 class Consumer(Thread):
-    def __init__(self, queue, jobs, ):
+    def __init__(self, queue, jobs):
         Thread.__init__(self)
         self.queue = queue
         self.jobs = jobs
         self.app = current_app._get_current_object()
+
+    def parsing_metadata(self, lines, job):
+        lines.reverse()
+        index = 0
+        for line in lines:
+            print(line)
+            if index == 1:
+                line = line.split(" ")
+                print(line[-1])
+                self.jobs[job["job_id"]]["filament_volume"] = int(line[-1])
+            elif index == 3:
+                line = line.split(" ")
+                self.jobs[job["job_id"]]["time"] = int(line[-1])
+            elif index == 5:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["maxz"] = float(line[-1])
+            elif index == 6:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["maxy"] = float(line[-1])
+            elif index == 7:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["maxx"] = float(line[-1])
+            elif index == 8:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["minz"] = float(line[-1])
+            elif index == 9:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["miny"] = float(line[-1])
+            elif index == 10:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["minx"] = float(line[-1])
+            elif index == 11:
+                line = line.split(":")
+                self.jobs[job["job_id"]]["layer_height"] = float(line[-1])
+            elif index == 12:
+                line = line.split(":")
+                # We remove the 'm' which indicates the scale
+                self.jobs[job["job_id"]]["filament_used"] = float(line[-1][:-1])
+            index += 1
 
     def run(self):
         with self.app.app_context():
@@ -30,13 +69,9 @@ class Consumer(Thread):
                 # Maybe use Popen if we have very trouble about the execution time
                 INPUT = self.app.config['PATH_STL'] + job["path_file"] + ".stl"
                 OUTPUT = self.app.config['PATH_GCODE'] + job["path_file"] + ".gcode"
-                process = subprocess.run([self.app.config['CURAENGINE'], 'slice', '-v', '-p', '-j', self.app.config['FDMPRINTER_DEF'], '-j', self.app.config['DEFAULT_PRINTERDEF'], '-l', INPUT, '-o', OUTPUT], universal_newlines=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                process = subprocess.run([self.app.config['CURAENGINE'], 'slice', '-v', '-p', '-j', self.app.config['FDMPRINTER_DEF'], '-j', self.app.config['DEFAULT_PRINTERDEF'],
+                '-l', INPUT, '-o', OUTPUT], universal_newlines=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-
-                print("Return code curaengine: ", process.returncode)
-                lines = process.stdout.split("\n")
-                for line in lines[-20:]:
-                        print(line)
                 
                 if process.returncode == 0:
                     #change status of our process
@@ -45,8 +80,7 @@ class Consumer(Thread):
 
                     #test every line and find the ones which are important (i.e. length of filament, time of the print, weight of filament) and transform them in JSON to save it in DB
                     lines = process.stdout.split("\n")
-                    for line in lines[-20:]:
-                        print(line)
+                    self.parsing_metadata(lines[-20:], job)
                     
                         
                     # Change the status and go consume an other job and be sure to have 100.0% in result

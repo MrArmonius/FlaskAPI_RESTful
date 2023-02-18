@@ -44,7 +44,17 @@ class JobList(Resource):
             "path_file": job_id,
             "status": "In Queue",
             "last-seen": str(datetime.now()),
-            "result": 0.0
+            "result": 0.0,
+            "time": -1,
+            "filament_used": -1.0,
+            "layer_height": -1.0,
+            "minx": -1.0,
+            "miny": -1.0,
+            "minz": -1.0,
+            "maxx": -1.0,
+            "maxy": -1.0,
+            "maxz": -1.0,
+            "filament_volume": -1
         }
         stl_file = args["file"]
         stl_file.save(path_file)

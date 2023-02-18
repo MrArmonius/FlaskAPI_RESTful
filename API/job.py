@@ -4,7 +4,7 @@ from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 # Resource: Individual Job Routes
 class Job(Resource):
     def __init__(self):
-        # Initialize The Flsak Request Parser and add arguments as in an expected request
+        # Initialize The Flask Request Parser and add arguments as in an expected request
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("path_file", type=str, help="The path to the file must be indicated", location="json")
 
