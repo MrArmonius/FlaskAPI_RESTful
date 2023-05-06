@@ -71,6 +71,7 @@ def create_app(test_config=None):
     def _run_thread():
         # Launch thread consummer
         from .consumer import Consumer
+        #Number of workers
         for _ in range(1):
             cons = Consumer(jobQueue, jobs)
             cons.daemon = True

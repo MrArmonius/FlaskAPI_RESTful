@@ -5,7 +5,10 @@ Flask-RESTful==0.3.9
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.1
+numpy==1.24.3
+numpy-stl==3.0.1
 pyspark==3.3.0
+python-utils==3.5.2
 pytz==2022.7.1
 six==1.16.0
 Werkzeug==2.2.2

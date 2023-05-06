@@ -6,6 +6,8 @@ from threading import Thread
 import time
 import io
 
+from .stl_format import refactor_stl
+
 # Function where we create a consummer, an object which consumme queue items in async. We use CuraEngine as subprocess and pipe out the output on a file.
 # Every seconds we check the new status and update it on the dict.
 # The queue is the same for all consummers.
@@ -63,12 +65,20 @@ class Consumer(Thread):
                 job = self.queue.get()
                 
                 # change the state of map "In Queue" to "In Process"
-                self.jobs[job["job_id"]]["status"] = "Slicing"
+                self.jobs[job["job_id"]]["status"] = "Refactoring"
 
                 # launch subprocess CuraEngine with path_file, path_json, output
                 # Maybe use Popen if we have very trouble about the execution time
                 INPUT = self.app.config['PATH_STL'] + job["path_file"] + ".stl"
                 OUTPUT = self.app.config['PATH_GCODE'] + job["path_file"] + ".gcode"
+
+                #Refactor the stl file to center it
+                refactor_stl(INPUT)
+
+                self.jobs[job["job_id"]]["result"] = 20.0
+                self.jobs[job["job_id"]]["status"] = "Slicing"
+
+                # Launch subprocess
                 process = subprocess.run([self.app.config['CURAENGINE'], 'slice', '-v', '-p', '-j', self.app.config['FDMPRINTER_DEF'], '-j', self.app.config['DEFAULT_PRINTERDEF'],
                 '-l', INPUT, '-o', OUTPUT], universal_newlines=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
