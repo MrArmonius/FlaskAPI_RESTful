@@ -1,7 +1,7 @@
 import numpy
 from stl import mesh
 
-X_Print_Board, Y_Print_Board, Z_Height = 220.0, 220.0, 250.0 
+X_Print_Board, Y_Print_Board, Z_Height = 300.0, 300.0, 300.0 
 
 def refactor_stl(path):
     my_mesh = mesh.Mesh.from_file(path)
